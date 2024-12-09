@@ -1,7 +1,7 @@
 volumes:
-  book_loan_system_local_postgres_data: {}
-  book_loan_system_local_postgres_data_backups: {}
-  book_loan_system_local_redis_data: {}
+  book_loan_system_local_postgres_data: { }
+  book_loan_system_local_postgres_data_backups: { }
+  book_loan_system_local_redis_data: { }
 
 services:
   django: &django
@@ -34,6 +34,8 @@ services:
       - book_loan_system_local_postgres_data_backups:/backups
     env_file:
       - ./.envs/.local/.postgres
+    ports:
+      - "5432:5432"
 
   mailpit:
     image: docker.io/axllent/mailpit:latest
@@ -44,10 +46,12 @@ services:
   redis:
     image: docker.io/redis:6
     container_name: book_loan_system_local_redis
-    
+
     volumes:
       - book_loan_system_local_redis_data:/data
-    
+    ports:
+      - "6379:6379"
+
 
   celeryworker:
     <<: *django
@@ -57,7 +61,7 @@ services:
       - redis
       - postgres
       - mailpit
-    ports: []
+    ports: [ ]
     command: /start-celeryworker
 
   celerybeat:
@@ -68,7 +72,7 @@ services:
       - redis
       - postgres
       - mailpit
-    ports: []
+    ports: [ ]
     command: /start-celerybeat
 
   flower:
@@ -78,6 +82,17 @@ services:
     ports:
       - '5555:5555'
     command: /start-flower
+
+  pycharm-python:
+    <<: *django
+    image: book_loan_system_local_python
+    container_name: book_loan_system_pycharm_python
+    volumes:
+      - .:/app:z
+    ports:
+      - "8001:8001"
+    command: python
+
 
   node:
     build:
