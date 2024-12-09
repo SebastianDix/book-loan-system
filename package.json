@@ -21,7 +21,7 @@
     "sass": "1.77.6"
   },
   "engines": {
-    "node": "22"
+    "node": "22.11"
   },
   "browserslist": [
     "last 2 versions"
