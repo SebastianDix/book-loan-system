@@ -1,10 +1,10 @@
+from django.conf import settings
 from django.db import models
 
+from book_loan_system.contrib.utils.model_utils import ReprMixin
 
-class BaseModel(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
+class BaseModel(ReprMixin, models.Model):
     class Meta:
         abstract = True
 
