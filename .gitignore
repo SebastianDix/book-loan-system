@@ -337,3 +337,5 @@ vendors.js
 *.min.js.map
 .env
 .envs/*
+
+.idea/
