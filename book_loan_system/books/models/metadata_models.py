@@ -14,6 +14,9 @@ class Author(BaseModel):
     death_date = models.DateField(null=True, blank=True)
     bio = models.TextField(blank=True)
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 class Publisher(BaseModel):
     @property
@@ -24,8 +27,11 @@ class Publisher(BaseModel):
     website = models.URLField(blank=True)
     country = models.CharField(max_length=100, blank=True)
 
+    class Meta:
+        unique_together = ("name", "country")
 
-class Genre(models.Model):
+
+class Genre(BaseModel):
     @property
     def repr_attributes(self):
         return ("name",)
@@ -36,10 +42,13 @@ class Genre(models.Model):
         return self.name
 
 
-class Language(models.Model):
+class Language(BaseModel):
     @property
     def repr_attributes(self):
         return "name", "iso_code"
 
     name = models.CharField(max_length=100, unique=True)
     iso_code = models.CharField(max_length=10, unique=True)
+
+    def __str__(self):
+        return self.name
